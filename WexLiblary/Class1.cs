@@ -9,22 +9,21 @@ namespace WexLiblary
     {
         #region Field
 
-        private string TickerUrl { get; } = @"https://wex.nz/api/3/ticker/";
+        private string TickerUrl { get; } = @"https://wex.nz/api/3/ticker/"; //url for ticket method
 
-        private string AllPairInfo { get; } = @"https://wex.nz/api/3/info/";
+        private string AllPairInfo { get; } = @"https://wex.nz/api/3/info/"; //url for info method
 
         private WebClient Client { get; } = new WebClient();
 
-        private string Trades { get; } = @"https://wex.nz/api/3/trades/";
+        private string Trades { get; } = @"https://wex.nz/api/3/trades/"; //url for trades method
 
-        private string Depth { get; } = @"https://wex.nz/api/3/depth/";
-        private JToken[] AllPairsInfo { get; set; } = null;
+        private string Depth { get; } = @"https://wex.nz/api/3/depth/"; //url for Depth method
         private string Response { get; set; } = null;
 
         #endregion
-
+        //region ticker method
         #region Ticker
-        public string GetBuy(string currencyPair)
+        public string TickerGetBuy(string currencyPair) //get pyrchase price
         {
             string outPairBuy = null;
             try
@@ -45,7 +44,7 @@ namespace WexLiblary
             }
         }
 
-        public string TickerGetSell(string currencyPair)
+        public string TickerGetSell(string currencyPair) //get selling price
         {
             string outPairSell = null;
             try
@@ -66,7 +65,7 @@ namespace WexLiblary
             }
         }
 
-        public string TickerGetHighPair(string currencyPair)
+        public string TickerGetHighPair(string currencyPair) //get max price
         {
             string outPairHigh = null;
             try
@@ -87,7 +86,7 @@ namespace WexLiblary
             }
         }
 
-        public string TickerGetLowPair(string currencyPair)
+        public string TickerGetLowPair(string currencyPair)//get low price
         {
             string outPairLow = null;
             try
@@ -108,7 +107,7 @@ namespace WexLiblary
             }
         }
 
-        public string TickerGetAvgPair(string currencyPair)
+        public string TickerGetAvgPair(string currencyPair)// get avg price
         {
             string outPairAvg = null;
             try
@@ -117,7 +116,7 @@ namespace WexLiblary
                 var pairInfo = JObject.Parse(Response)[currencyPair].ToArray();
                 foreach (var realTime in pairInfo)
                 {
-                    outPairAvg = realTime.Parent["high"].ToString();
+                    outPairAvg = realTime.Parent["avg"].ToString();
                     break;
                 }
                 return outPairAvg;
@@ -128,7 +127,7 @@ namespace WexLiblary
                 throw;
             }
         }
-        public string TickerGetFirstVolume(string currencyPair)
+        public string TickerGetFirstVolume(string currencyPair)// example : btc/uds. First is btc
         {
             string outPairFirstVolume = null;
             try
@@ -149,7 +148,7 @@ namespace WexLiblary
             }
         }
 
-        public string TickerGetSecondValuePair(string currencyPair)
+        public string TickerGetSecondValuePair(string currencyPair)//example : btc/usd. Second is usd
         {
             string outPairSecondValuePair = null;
             try
@@ -171,7 +170,7 @@ namespace WexLiblary
 
         }
 
-        public string TickerGetLastPrice(string currencyPair)
+        public string TickerGetLastPrice(string currencyPair) // get price last deal
         {
             string outLastPrice = null;
             try
@@ -192,14 +191,13 @@ namespace WexLiblary
             }
         }
 
-        #endregion
-
+        #endregion // region Ticker method
+        //region info method
         #region Info
-        public JToken[] InfoGetAllPairInfo()
+        public JToken[] InfoGetAllPairInfo() //get array information about Pairs
         {
             Response = Client.DownloadString(AllPairInfo);
             var pairsInfo = JObject.Parse(Response)["pairs"].ToArray();
-            AllPairsInfo = pairsInfo;
             return pairsInfo;
         }
         public string InfoGetFee(string currencyPair)
@@ -207,7 +205,9 @@ namespace WexLiblary
             try
             {
                 var fee = "";
-                foreach (var z in AllPairsInfo)
+                Response = Client.DownloadString(AllPairInfo);
+                var pairsInfo = JObject.Parse(Response)["pairs"].ToArray();
+                foreach (var z in pairsInfo)
                 {
                     fee = z.Parent[currencyPair]["fee"].ToString();
                     return fee;
@@ -219,14 +219,16 @@ namespace WexLiblary
                 Console.WriteLine(e);
                 throw;
             }
-        }
+        }//
 
         public string InfoGetDecimalPlaces(string currencyPair)
         {
             try
             {
                 var decimalPlaces = "";
-                foreach (var z in AllPairsInfo)
+                Response = Client.DownloadString(AllPairInfo);
+                var pairsInfo = JObject.Parse(Response)["pairs"].ToArray();
+                foreach (var z in pairsInfo)
                 {
                     decimalPlaces = z.Parent[currencyPair]["decimal_places"].ToString();
                     return decimalPlaces;
@@ -245,7 +247,9 @@ namespace WexLiblary
             try
             {
                 var minPrice = "";
-                foreach (var z in AllPairsInfo)
+                Response = Client.DownloadString(AllPairInfo);
+                var pairsInfo = JObject.Parse(Response)["pairs"].ToArray();
+                foreach (var z in pairsInfo)
                 {
                     minPrice = z.Parent[currencyPair]["min_price"].ToString();
                     return minPrice;
@@ -264,7 +268,9 @@ namespace WexLiblary
             try
             {
                 var maxPrice = "";
-                foreach (var z in AllPairsInfo)
+                Response = Client.DownloadString(AllPairInfo);
+                var pairsInfo = JObject.Parse(Response)["pairs"].ToArray();
+                foreach (var z in pairsInfo)
                 {
                     maxPrice = z.Parent[currencyPair]["max_price"].ToString();
                     return maxPrice;
@@ -283,7 +289,9 @@ namespace WexLiblary
             try
             {
                 var MinAmount = "";
-                foreach (var z in AllPairsInfo)
+                Response = Client.DownloadString(AllPairInfo);
+                var pairsInfo = JObject.Parse(Response)["pairs"].ToArray();
+                foreach (var z in pairsInfo)
                 {
                     MinAmount = z.Parent[currencyPair]["min_amount"].ToString();
                     return MinAmount;
@@ -304,7 +312,9 @@ namespace WexLiblary
                 var hidden = "";
                 var isHidden = false;
                 var count = 0;
-                foreach (var z in AllPairsInfo)
+                Response = Client.DownloadString(AllPairInfo);
+                var pairsInfo = JObject.Parse(Response)["pairs"].ToArray();
+                foreach (var z in pairsInfo)
                 {
                     hidden = z.Parent[currencyPair]["hidden"].ToString();
                     count = int.Parse(hidden);
@@ -322,14 +332,14 @@ namespace WexLiblary
         }
 
         #endregion
-
+        //region depth method
         #region Depth
 
-        public JToken[] DepthGetAllPairs(string currencyPair)
+        public JToken[] DepthGetAllPairs(string currencyPair) //get 150 activity orders
         {
             try
             {
-                var depthPair = Client.DownloadString(Depth);
+                var depthPair = Client.DownloadString(Depth + currencyPair);
                 var respArray = JObject.Parse(depthPair)[currencyPair].ToArray();
                 return respArray;
             }
@@ -341,11 +351,13 @@ namespace WexLiblary
 
         }
 
-        public JToken[] DepthGetAllPairs(string currencyPair, string limit)
+        public JToken[] DepthGetAllPairs(string currencyPair, string limit) //limit cant not be more than 5000
         {
             try
             {
-                var depthPair = Client.DownloadString(Depth + "?limit=" + limit);
+                if (Convert.ToInt32(limit) >= 5000)
+                    limit = "5000";
+                var depthPair = Client.DownloadString(Depth + currencyPair + "?limit=" + limit);
                 var respArray = JObject.Parse(depthPair)[currencyPair].ToArray();
                 return respArray;
             }
@@ -357,11 +369,11 @@ namespace WexLiblary
 
         }
 
-        public JToken[] DepthGetAsks(string currencyPair)
+        public JToken[] DepthGetAsks(string currencyPair) //get asks order (order for sale)
         {
             try
             {
-                var depthAsksPair = Client.DownloadString(Depth);
+                var depthAsksPair = Client.DownloadString(Depth + currencyPair);
                 var respAsksArray = JObject.Parse(depthAsksPair)[currencyPair]["asks"].ToArray();
                 return respAsksArray;
 
@@ -377,7 +389,9 @@ namespace WexLiblary
         {
             try
             {
-                var depthAskPair = Client.DownloadString(Depth + "?limit=" + limit);
+                if (Convert.ToInt32(limit) >= 5000)
+                    limit = "5000";
+                var depthAskPair = Client.DownloadString(Depth + currencyPair + "?limit=" + limit);
                 var respAsksArray = JObject.Parse(depthAskPair)[currencyPair]["asks"].ToArray();
                 return respAsksArray;
             }
@@ -387,13 +401,13 @@ namespace WexLiblary
                 throw;
             }
 
-        }
+        }//limit cant not be more than 5000
 
-        public JToken[] DepthGetBids(string currencyPair)
+        public JToken[] DepthGetBids(string currencyPair)//get bids order(order for purchase)
         {
             try
             {
-                var depthBidsPair = Client.DownloadString(Depth);
+                var depthBidsPair = Client.DownloadString(Depth + currencyPair);
                 var respDibsArray = JObject.Parse(depthBidsPair)[currencyPair]["bids"].ToArray();
                 return respDibsArray;
             }
@@ -405,11 +419,13 @@ namespace WexLiblary
 
         }
 
-        public JToken[] DepthGetBids(string currencyPair, string limit)
+        public JToken[] DepthGetBids(string currencyPair, string limit)//limit cant not be more than 5000
         {
             try
             {
-                var depthBidsPair = Client.DownloadString(Depth + "?limit=" + limit);
+                if (Convert.ToInt32(limit) >= 5000)
+                    limit = "5000";
+                var depthBidsPair = Client.DownloadString(Depth + currencyPair + "?limit=" + limit);
                 var respDibsArray = JObject.Parse(depthBidsPair)[currencyPair]["bids"].ToArray();
                 return respDibsArray;
             }
@@ -422,10 +438,10 @@ namespace WexLiblary
         }
 
         #endregion
-
+        //region trades method
         #region Trades
 
-        public JToken[] GetTrades(string currencyPair)
+        public JToken[] GetTrades(string currencyPair) // info about last deal
         {
             try
             {
@@ -441,7 +457,7 @@ namespace WexLiblary
 
         }
 
-        public JToken[] GetTrades(string currencyPair, string limit)
+        public JToken[] GetTrades(string currencyPair, string limit)//limit cant not be more than 5000
         {
             try
             {
