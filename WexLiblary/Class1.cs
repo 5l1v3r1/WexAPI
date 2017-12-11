@@ -9,17 +9,17 @@ namespace WexLiblary
     {
         #region Field
 
-        public string TickerUrl { get; } = @"https://wex.nz/api/3/ticker/";
+        private string TickerUrl { get; } = @"https://wex.nz/api/3/ticker/";
 
-        public string AllPairInfo { get; } = @"https://wex.nz/api/3/info/";
+        private string AllPairInfo { get; } = @"https://wex.nz/api/3/info/";
 
-        public WebClient Client { get; } = new WebClient();
+        private WebClient Client { get; } = new WebClient();
 
-        public string Trades { get; } = @"https://wex.nz/api/3/trades/";
+        private string Trades { get; } = @"https://wex.nz/api/3/trades/";
 
-        public string Depth { get; } = @"https://wex.nz/api/3/depth/";
-        public JToken[] AllPairsInfo { get; set; } = null;
-        public string Response { get; set; } = null;
+        private string Depth { get; } = @"https://wex.nz/api/3/depth/";
+        private JToken[] AllPairsInfo { get; set; } = null;
+        private string Response { get; set; } = null;
 
         #endregion
 
