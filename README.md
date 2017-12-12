@@ -11,7 +11,7 @@ If you want to use this library in your project, you will need use this library 
 
 ```c#
 var wx = new WexCurrency();
-string btcBuy = wx.Ticker.GetBuy("btc_usd"); // pyrchase price btc
+string btcBuy = wx.TickerGetBuy("btc_usd"); // pyrchase price btc
 ------------------------------
 var wx = new WexCurrency();
 string btcMin = wx.InfoGetMinPrice("btc_usd"); // min price btc
