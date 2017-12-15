@@ -1,5 +1,5 @@
 # WexAPI
-WexLibrary Easy way to use the Wex.nz Public API.
+WexLibrary easy way to use the Wex.nz Public API.
 
 Their site https://wex.nz/
 
